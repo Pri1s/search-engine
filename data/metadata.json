@@ -1,0 +1,29 @@
+{
+  "total_documents_collected": 100,
+  "sources_used": [
+    {
+      "source": "Wikipedia",
+      "documents": 100,
+      "content_endpoint": "https://en.wikipedia.org/w/index.php?title=Special:Export",
+      "license_note": "Wikipedia text is generally available under CC BY-SA; retain source URLs and provide attribution in downstream use."
+    }
+  ],
+  "category_distribution": {
+    "basketball_concept": 18,
+    "historical_analysis": 21,
+    "player_profile": 36,
+    "strategy_breakdown": 15,
+    "team_analysis": 10
+  },
+  "date_range": {
+    "earliest": null,
+    "latest": null,
+    "note": "Publication dates are not consistently exposed by Wikimedia Special:Export and are therefore null in this initial corpus."
+  },
+  "extraction_limitations": [
+    "Content is sourced from English Wikipedia current revisions via Wikimedia Special:Export and may change when pages are revised.",
+    "The export does not supply reliable bylines or original publication dates; author and published_date are null.",
+    "Team and player arrays are curated entity tags for search filtering, not exhaustive entity extraction from every mention in the article body.",
+    "Tables, images, citations, and reference lists are excluded so the corpus remains focused on searchable explanatory text."
+  ]
+}
