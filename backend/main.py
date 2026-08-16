@@ -1,11 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session # a session is a temporary workspace for interacting with the database
 
-from database import get_db
+from database import Base, get_db, engine
 from models import Document
 from schemas import DocumentCreate, DocumentResponse
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def root():
@@ -26,12 +28,16 @@ def create_document(
     db.refresh(db_document)
     return db_document
 
-@app.get("/documents/{document_id}", response_model=list[DocumentResponse])
+@app.get("/documents", response_model=list[DocumentResponse])
+def get_documents(db: Session = Depends(get_db)):
+    return db.query(Document).all()
+
+@app.get("/documents/{document_id}", response_model=DocumentResponse)
 def get_document(
     document_id: int,
     db: Session = Depends(get_db)
 ):
     document = db.query(Document).filter(Document.id == document_id).first()
     if document is None:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=404, detail="Document not found")
     return document
