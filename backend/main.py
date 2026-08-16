@@ -25,7 +25,7 @@ def create_document(
     )
     db.add(db_document)
     db.commit()
-    db.refresh(db_document)
+    db.refresh(db_document) # updates PYTHON object w/ values that the database created for our object (i.e default values for NULL fields sent in)
     return db_document
 
 @app.get("/documents", response_model=list[DocumentResponse])

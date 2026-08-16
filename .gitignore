@@ -1,3 +1,4 @@
 project-overview.md
-
 .env
+__pycache__/
+*.pyc
