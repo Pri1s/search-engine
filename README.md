@@ -59,6 +59,22 @@ docker compose down
 
 Add `-v` to also delete the Postgres data volume (wipes the database).
 
+## Search ranking
+
+`backend/search/index.py` currently scores documents with TF-IDF and is being extended toward BM25, which additionally saturates term frequency and normalizes for document length:
+
+```
+score(D, Q) = Σ IDF(qi) · f(qi, D) · (k1 + 1)
+                ─────────────────────────────────────
+                f(qi, D) + k1 · (1 - b + b · |D| / avgdl)
+```
+
+- `f(qi, D)` — how many times query term `qi` occurs in document `D`
+- `|D|` / `avgdl` — length of `D` (in tokens) and the average document length across the corpus
+- `k1` (typically 1.2–2.0) — controls term-frequency saturation; higher values let repeated terms keep adding score for longer
+- `b` (typically 0.75) — controls how strongly document length is normalized; `0` disables length normalization, `1` applies it fully
+- `IDF(qi)` — inverse document frequency, typically `ln((N - n(qi) + 0.5) / (n(qi) + 0.5) + 1)`, where `N` is the total number of documents and `n(qi)` is the number of documents containing `qi`
+
 ## Project layout
 
 ```
