@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from collections import defaultdict
 
 # the inverted idnex uses words as keys and an integer array of document indexes as values
@@ -5,14 +6,29 @@ from collections import defaultdict
 class InvertedIndex:
     def __init__(self):
         self.index = defaultdict(set)
+=======
+from collections import defaultdict, Counter # `Counter` counts how many times each value occurs in an iterable
+
+# the inverted idnex uses words as keys and an integer array of document indexes as values
+# usually, a `token` is just an individual word we extract from a document
+class InvertedIndex:
+    def __init__(self):
+        self.index = defaultdict(dict) # each token key will store a dict w/ keys being doc IDs & values being num. of token occurences 
+>>>>>>> Stashed changes
 
     # upon tokenizing a document, we can add it's index along with all the words we extracted from it
     def add_doc(self, doc_id, tokens): # `tokens` is a list of words in THE doc
         self.doc_ids.add(doc_id)
+<<<<<<< Updated upstream
         for token in tokens:
             if token not in self.index:
                 self.index[token] = set() # should be a set to avoid duplicates
             self.index[token].add(doc_id)
+=======
+        token_counts = Counter(tokens) # returns a dict w/ key being the word and value being occurences
+        for token, count in token_count.items():
+            self.index[token][doc_id] = count
+>>>>>>> Stashed changes
 
     @property
     def doc_count(self):
@@ -24,6 +40,10 @@ class InvertedIndex:
     # let's use the inverse document frequency theory: the less a keyword occurs in the docs, the more valuable it is (so we should rank those docs higher)
     # IDF formula: log(N/t) where `N` is the total number of docs & `t` is the number of docs w/ out keyword
     # since the log function flattens out, a low `t` value doesn't have a monopoly over our ranking (the weights are more forgiving)
+<<<<<<< Updated upstream
+=======
+    # we must account for term frequency per document in the scoring
+>>>>>>> Stashed changes
     def search(self, tokens):
         scores = {}
         for token in tokens:
@@ -33,6 +53,11 @@ class InvertedIndex:
             t = len(self.index[token])
             # IDF formula: log(N/t) where `N` is the total number of docs & `t` is the number of docs w/ out keyword
             idf = math.log(self.doc_count / t)
+<<<<<<< Updated upstream
             for doc_id in self.index[token]:
                 scores[doc_id] = scores.get(doc_id, 0) + idf
+=======
+            for doc_id, term_frequency in self.index[token].items():
+                scores[doc_id] = scores.get(doc_id, 0) + term_frequency * idf # IDF scales each occurence through multiplication
+>>>>>>> Stashed changes
         return sorted(scores, key=scores.get, reverse=True)

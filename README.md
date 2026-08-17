@@ -1,6 +1,6 @@
 # Search Engine
 
-A domain-specific (vertical) search engine. Currently a FastAPI backend backed by PostgreSQL, with basic document create/read endpoints.
+A domain-specific (vertical) search engine, currently focused on basketball. A FastAPI backend backed by PostgreSQL, with document create/read endpoints, a JSON-based ingestion script, and a work-in-progress inverted index for search.
 
 ## Prerequisites
 
@@ -42,6 +42,15 @@ A domain-specific (vertical) search engine. Currently a FastAPI backend backed b
 
    The API will be available at [http://localhost:8000](http://localhost:8000), with interactive docs at [http://localhost:8000/docs](http://localhost:8000/docs).
 
+## Ingesting documents
+
+Sample documents live as JSON files in `data/documents/` (one file per document, with `title`, `url`, and `content` fields). To load them into the database:
+
+```bash
+cd backend
+uv run ingest_docs.py
+```
+
 ## Stopping
 
 ```bash
@@ -54,9 +63,14 @@ Add `-v` to also delete the Postgres data volume (wipes the database).
 
 ```
 backend/
-  main.py        # FastAPI app & routes
-  database.py     # SQLAlchemy engine/session setup
-  models.py       # SQLAlchemy ORM models
-  schemas.py      # Pydantic request/response schemas
-docker-compose.yml # Local Postgres container
+  main.py           # FastAPI app & routes
+  database.py       # SQLAlchemy engine/session setup
+  models.py         # SQLAlchemy ORM models
+  schemas.py        # Pydantic request/response schemas
+  ingest_docs.py    # Loads JSON documents from data/documents/ into the database
+  search/
+    index.py        # Inverted index for search ranking (work in progress, not yet wired into the API)
+data/
+  documents/         # Sample documents (JSON) used by ingest_docs.py
+docker-compose.yml   # Local Postgres container
 ```
