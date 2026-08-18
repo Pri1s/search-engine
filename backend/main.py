@@ -69,10 +69,13 @@ def search_documents(
     db: Session = Depends(get_db)
 ):
     tokens = tokenize(q)
-    ranked_doc_ids = request.app.state.index.search(tokens)
-    # SQL doesn't guarantee that `IN` will preserve our BM25 order
+    ranked_results = request.app.state.index.search(tokens)
+    ranked_doc_ids = [doc_id for doc_id, _ in ranked_results]
     docs = db.query(Document).filter(Document.id.in_(ranked_doc_ids)).all()
     docs_lookup = {doc.id: doc for doc in docs}
-    # we traverse thru our ranked documents array, check if those documents have been retrieved & append them in the ranked order
-    ranked_docs = [docs_lookup[doc_id] for doc_id in ranked_doc_ids if doc_id in docs_lookup]
-    return ranked_docs
+    return [
+        {
+            "document": docs_lookup[doc_id],
+            "score": score
+        } for doc_id, score in ranked_results if doc_id in docs_lookup
+    ]
