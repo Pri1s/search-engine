@@ -1,13 +1,24 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from sqlalchemy.orm import Session # a session is a temporary workspace for interacting with the database
+from contextlib import asynccontextmanager # a tool for defining the lifetime of a resource
 
 from database import Base, get_db, engine
 from models import Document
 from schemas import DocumentCreate, DocumentResponse
+from search.tokenizer import tokenize
+from index_documents import build_index
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine) # database tables need to exist prior to us building the index
+    app.state.index = build_index()
+    # everything prior to the yield is is interpretted as the enter/setup phase: runs once when FastAPI starts
+    # the yielded period is the resource-is-active 
+    # FastAPI serves requests while we're here
+    yield
+    # everything after the yield is the exit/cleanup phase: runs when FastAPI shuts down
 
-Base.metadata.create_all(bind=engine)
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def root():
@@ -15,29 +26,44 @@ def root():
 
 @app.post("/documents", response_model=DocumentResponse)
 def create_document(
-    document: DocumentCreate,
+    doc: DocumentCreate,
     db: Session = Depends(get_db) # calls `get_db` which creates a SessionLocal() & gives session to the function
     ):
-    db_document = Document(
-        title=document.title,
-        url=document.url,
-        content=document.content
+    db_doc = Document(
+        title=doc.title,
+        url=doc.url,
+        content=doc.content
     )
-    db.add(db_document)
+    db.add(db_doc)
     db.commit()
-    db.refresh(db_document) # updates PYTHON object w/ values that the database created for our object (i.e default values for NULL fields sent in)
-    return db_document
+    db.refresh(db_doc) # updates PYTHON object w/ values that the database created for our object (i.e default values for NULL fields sent in)
+    return db_doc
 
 @app.get("/documents", response_model=list[DocumentResponse])
 def get_documents(db: Session = Depends(get_db)):
     return db.query(Document).all()
 
-@app.get("/documents/{document_id}", response_model=DocumentResponse)
+@app.get("/documents/{doc_id}", response_model=DocumentResponse)
 def get_document(
-    document_id: int,
+    doc_id: int,
     db: Session = Depends(get_db)
 ):
-    document = db.query(Document).filter(Document.id == document_id).first()
-    if document is None:
+    doc = db.query(Document).filter(Document.id == doc_id).first()
+    if doc is None:
         raise HTTPException(status_code=404, detail="Document not found")
-    return document
+    return doc
+
+@app.get("/search")
+def search_documents(
+    q: str,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    tokens = tokenize(q)
+    ranked_doc_ids = request.app.state.index.search(tokens)
+    # SQL doesn't guarantee that `IN` will preserve our BM25 order
+    docs = db.query(Document).filter(Document.id.in_(ranked_doc_ids)).all()
+    docs_lookup = {doc.id: doc for doc in docs}
+    # we traverse thru our ranked documents array, check if those documents have been retrieved & append them in the ranked order
+    ranked_docs = [docs_lookup[doc_id] for doc_id in ranked_doc_ids if doc_id in docs_lookup]
+    return ranked_docs
