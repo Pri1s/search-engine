@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session # a session is a temporary workspace for interacting with the database
 from contextlib import asynccontextmanager # a tool for defining the lifetime of a resource
 
@@ -19,6 +20,14 @@ async def lifespan(app: FastAPI):
     # everything after the yield is the exit/cleanup phase: runs when FastAPI shuts down
 
 app = FastAPI(lifespan=lifespan)
+
+# allows the static frontend (served from a different origin, e.g. a local file server) to call the API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def root():

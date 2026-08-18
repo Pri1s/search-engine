@@ -20,7 +20,7 @@ from xml.etree import ElementTree
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCUMENT_DIR = ROOT / "data" / "documents"
+DOC_DIR = ROOT / "data" / "documents"
 METADATA_PATH = ROOT / "data" / "metadata.json"
 EXPORT_URL = "https://en.wikipedia.org/w/index.php"
 USER_AGENT = "basketball-search-engine-initial-corpus/1.0 (educational local project)"
@@ -43,7 +43,7 @@ def document(
 
 # Curated for durable basketball knowledge.  The list intentionally balances
 # profiles, franchise context, major Finals, and tactical/conceptual pages.
-DOCUMENTS = [
+DOCS = [
     # Player profiles (36)
     document("Michael Jordan", "player_profile", teams=["Chicago Bulls", "Washington Wizards"], players=["Michael Jordan"]),
     document("LeBron James", "player_profile", teams=["Cleveland Cavaliers", "Miami Heat", "Los Angeles Lakers"], players=["LeBron James"]),
@@ -314,14 +314,14 @@ def count_words(text: str) -> int:
 
 
 def main() -> int:
-    if len(DOCUMENTS) != 100:
-        raise RuntimeError(f"Expected 100 curated documents, found {len(DOCUMENTS)}")
+    if len(DOCS) != 100:
+        raise RuntimeError(f"Expected 100 curated documents, found {len(DOCS)}")
 
-    DOCUMENT_DIR.mkdir(parents=True, exist_ok=True)
+    DOC_DIR.mkdir(parents=True, exist_ok=True)
     articles: dict[str, tuple[str, str]] = {}
     title_batches = [
-        [str(spec["title"]) for spec in DOCUMENTS[offset : offset + 20]]
-        for offset in range(0, len(DOCUMENTS), 20)
+        [str(spec["title"]) for spec in DOCS[offset : offset + 20]]
+        for offset in range(0, len(DOCS), 20)
     ]
     for batch_number, titles in enumerate(title_batches, start=1):
         try:
@@ -334,7 +334,7 @@ def main() -> int:
 
     collected: list[dict[str, object]] = []
     failures: list[str] = []
-    for index, spec in enumerate(DOCUMENTS, start=1):
+    for index, spec in enumerate(DOCS, start=1):
         requested_title = str(spec["title"])
         canonical_title, content = articles[requested_title]
 
@@ -368,7 +368,7 @@ def main() -> int:
         raise RuntimeError(f"Expected 100 collected documents, got {len(collected)}")
 
     for index, record in enumerate(collected, start=1):
-        destination = DOCUMENT_DIR / f"document_{index:03d}.json"
+        destination = DOC_DIR / f"document_{index:03d}.json"
         destination.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     distribution = dict(sorted(Counter(str(row["category"]) for row in collected).items()))
@@ -397,7 +397,7 @@ def main() -> int:
     }
     METADATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     METADATA_PATH.write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"\nWrote {len(collected)} documents to {DOCUMENT_DIR}")
+    print(f"\nWrote {len(collected)} documents to {DOC_DIR}")
     return 0
 
 
