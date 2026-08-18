@@ -10,10 +10,12 @@ def build_index():
     try:
         docs = db.query(Document).all()
         for doc in docs:
-            tokens = tokenize(doc.content)
+            title_tokens = tokenize(doc.title)
+            body_tokens = tokenize(doc.content)
             index.add_document(
                 doc.id,
-                tokens
+                title_tokens,
+                body_tokens
             )
         return index
     finally:

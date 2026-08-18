@@ -5,17 +5,19 @@ from collections import defaultdict, Counter # `Counter` counts how many times e
 # usually, a `token` is just an individual word we extract from a document
 class InvertedIndex:
     def __init__(self):
-        self.index = defaultdict(dict) # each token key will store a dict w/ keys being document IDs & values being num. of token occurences
+        self.body_index = defaultdict(dict) # each token key will store a dict w/ keys being document IDs & values being num. of token occurences
+        self.title_index = defaultdict(dict) # separate index for title tokens
         self.doc_ids = set()
         self.doc_lens = {}
 
-    # upon tokenizing a document, we can add it's index along with all the words we extracted from it
-    def add_document(self, doc_id, tokens): # `tokens` is a list of words in THE document
+    # upon tokenizing a document, we can add it's body_index along with all the words we extracted from it
+    def add_document(self, doc_id, title_tokens, body_tokens): # `tokens` is a list of words in THE document
         self.doc_ids.add(doc_id)
-        self.doc_lens[doc_id] = len(tokens)
-        token_counts = Counter(tokens) # returns a dict w/ key being the word and value being occurences
-        for token, count in token_counts.items():
-            self.index[token][doc_id] = count
+        self.doc_lens[doc_id] = len(body_tokens)
+        for token, count in Counter(body_tokens).items(): # count the occurences of each token in the body
+            self.body_index[token][doc_id] = count
+        for token, count in Counter(title_tokens).items(): # count the occurences of each token in the title
+            self.title_index[token][doc_id] = count
 
     # `@property` is computed everytime access the method
     @property
@@ -44,20 +46,29 @@ class InvertedIndex:
         b = 0.75
         scores = {}
         for token in set(tokens): # `set` is used to avoid duplicate query tokens
-            if token not in self.index: # skip tokens not in the index; avoid divide by zero errors
-                continue
-            # number of documents with the token
-            t = len(self.index[token])
-            # IDF formula: log(N/t) where `N` is the total number of documents & `t` is the number of documents w/ out keyword
-            # we'll evolve our IDF formula into the standard BM25 IDF formula: log((N - t + 0.5) / (t + 0.5))
-            idf = math.log((self.document_count - t + 0.5) / (t + 0.5))
-            for doc_id, term_frequency in self.index[token].items(): # the score for each document is computed/added here
-                doc_len = self.doc_lens[doc_id]
-                len_normalization = (1 - b + b * (doc_len / self.avg_document_len))
-                tf_score = (term_frequency * (k1 + 1) / (term_frequency + k1 * len_normalization))
-                scores[doc_id] = scores.get(doc_id, 0) + idf * tf_score
+            if token in self.body_index:
+                # number of documents with the token
+                t = len(self.body_index[token])
+                # IDF formula: log(N/t) where `N` is the total number of documents & `t` is the number of documents w/ out keyword
+                # we'll evolve our IDF formula into the standard BM25 IDF formula: log((N - t + 0.5) / (t + 0.5))
+                idf = math.log((self.document_count - t + 0.5) / (t + 0.5))
+                for doc_id, term_frequency in self.body_index[token].items(): # the score for each document is computed/added here
+                    doc_len = self.doc_lens[doc_id]
+                    len_normalization = (1 - b + b * (doc_len / self.avg_document_len))
+                    tf_score = (term_frequency * (k1 + 1) / (term_frequency + k1 * len_normalization))
+                    scores[doc_id] = scores.get(doc_id, 0) + idf * tf_score
+            if token in self.title_index:
+                # number of documents with the token
+                t = len(self.title_index[token])
+                # IDF formula: log(N/t) where `N` is the total number of documents & `t` is the number of documents w/ out keyword
+                # we'll evolve our IDF formula into the standard BM25 IDF formula: log((N - t + 0.5) / (t + 0.5))
+                idf = math.log((self.document_count - t + 0.5) / (t + 0.5))
+                for doc_id, term_frequency in self.title_index[token].items(): # the score for each document is computed/added here
+                    # for title tokens, we don't need length normalization, so we can use the standard saturated TF-IDF formula
+                    tf_score = term_frequency * (k1 + 1) / (term_frequency + k1)
+                    scores[doc_id] = scores.get(doc_id, 0) + idf * tf_score
         return sorted(
-            scores.items(), 
-            key=scores.get, 
-            reverse=True
+            scores.items(), # returns a list of tuples (doc_id, score)
+            key=lambda x: x[1], # sort by the score value in the tuple (doc_id, score)
+            reverse=True # sort in descending order
         )
