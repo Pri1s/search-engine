@@ -39,19 +39,25 @@ class InvertedIndex:
     # BM25 is a method that improved upon TF-IDF. what is it?
     # it's sessentially IDF for rarity + saturated + length normalization for fairness across short & long documents
     def search(self, tokens):
+        # BM25 parames
         k1 = 1.5
         b = 0.75
         scores = {}
-        for token in tokens:
-            if not token:
+        for token in set(tokens): # `set` is used to avoid duplicate query tokens
+            if token not in self.index: # skip tokens not in the index; avoid divide by zero errors
                 continue
             # number of documents with the token
             t = len(self.index[token])
             # IDF formula: log(N/t) where `N` is the total number of documents & `t` is the number of documents w/ out keyword
-            idf = math.log(self.document_count / t)
+            # we'll evolve our IDF formula into the standard BM25 IDF formula: log((N - t + 0.5) / (t + 0.5))
+            idf = math.log((self.document_count - t + 0.5) / (t + 0.5))
             for doc_id, term_frequency in self.index[token].items(): # the score for each document is computed/added here
                 doc_len = self.doc_lens[doc_id]
                 len_normalization = (1 - b + b * (doc_len / self.avg_document_len))
                 tf_score = (term_frequency * (k1 + 1) / (term_frequency + k1 * len_normalization))
                 scores[doc_id] = scores.get(doc_id, 0) + idf * tf_score
-        return sorted(scores, key=scores.get, reverse=True)
+        return sorted(
+            scores.items(), 
+            key=scores.get, 
+            reverse=True
+        )
