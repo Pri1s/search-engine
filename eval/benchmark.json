@@ -1,0 +1,1545 @@
+{
+  "benchmark_version": "1.0",
+  "corpus_size": 100,
+  "id_note": "doc_id is the live Postgres documents.id. backend/ingest_documents.py inserts files in unsorted glob order, so these ids change on re-ingest. Re-resolve via the 'title' / 'source_file' fields if the corpus is reloaded.",
+  "relevance_scale": {
+    "3": "highly relevant - primary topic match",
+    "2": "relevant - meaningful connection",
+    "1": "weakly relevant",
+    "0": "irrelevant - included as a hard negative"
+  },
+  "unjudged_policy": "Any document not listed for a query is treated as grade 0.",
+  "queries": [
+    {
+      "query": "michael jordan bulls dynasty",
+      "category": "entity_multi",
+      "documents": [
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 3,
+          "reason": "Primary profile of the player the query centers on; covers all six Bulls titles and both three-peats."
+        },
+        {
+          "doc_id": 21,
+          "title": "Chicago Bulls",
+          "source_file": "document_038.json",
+          "relevance": 3,
+          "reason": "Franchise article whose core narrative is the Jordan-era dynasty."
+        },
+        {
+          "doc_id": 17,
+          "title": "1998 NBA Finals",
+          "source_file": "document_055.json",
+          "relevance": 2,
+          "reason": "The championship that closed out the second three-peat and Jordan's Bulls tenure."
+        },
+        {
+          "doc_id": 12,
+          "title": "1993 NBA Finals",
+          "source_file": "document_054.json",
+          "relevance": 2,
+          "reason": "Completed the first Bulls three-peat with Jordan as Finals MVP."
+        },
+        {
+          "doc_id": 52,
+          "title": "1991 NBA Finals",
+          "source_file": "document_053.json",
+          "relevance": 2,
+          "reason": "Jordan's and the dynasty's first championship."
+        },
+        {
+          "doc_id": 31,
+          "title": "Scottie Pippen",
+          "source_file": "document_029.json",
+          "relevance": 2,
+          "reason": "Co-star of the dynasty; large sections describe the same six title runs."
+        },
+        {
+          "doc_id": 57,
+          "title": "Triangle offense",
+          "source_file": "document_069.json",
+          "relevance": 1,
+          "reason": "The system the dynasty was built on, but the article is scheme-level, not Bulls-specific."
+        }
+      ]
+    },
+    {
+      "query": "lebron championships",
+      "category": "attribute_entity",
+      "documents": [
+        {
+          "doc_id": 18,
+          "title": "LeBron James",
+          "source_file": "document_002.json",
+          "relevance": 3,
+          "reason": "Primary profile; enumerates all four titles and the Finals appearances around them."
+        },
+        {
+          "doc_id": 28,
+          "title": "2016 NBA Finals",
+          "source_file": "document_063.json",
+          "relevance": 3,
+          "reason": "LeBron's signature championship and Finals MVP performance."
+        },
+        {
+          "doc_id": 84,
+          "title": "2013 NBA Finals",
+          "source_file": "document_060.json",
+          "relevance": 3,
+          "reason": "LeBron's second title with Miami, won as Finals MVP."
+        },
+        {
+          "doc_id": 69,
+          "title": "2020 NBA Finals",
+          "source_file": "document_067.json",
+          "relevance": 3,
+          "reason": "LeBron's fourth title, with a third franchise."
+        },
+        {
+          "doc_id": 35,
+          "title": "Cleveland Cavaliers",
+          "source_file": "document_044.json",
+          "relevance": 2,
+          "reason": "Team article covering the championship LeBron delivered to Cleveland."
+        },
+        {
+          "doc_id": 13,
+          "title": "Miami Heat",
+          "source_file": "document_042.json",
+          "relevance": 2,
+          "reason": "Team article covering the two titles LeBron won in Miami."
+        },
+        {
+          "doc_id": 96,
+          "title": "2014 NBA Finals",
+          "source_file": "document_061.json",
+          "relevance": 1,
+          "reason": "A LeBron Finals appearance, but a loss — relevant context, not a championship."
+        }
+      ]
+    },
+    {
+      "query": "kobe bryant black mamba lakers",
+      "category": "entity",
+      "documents": [
+        {
+          "doc_id": 11,
+          "title": "Kobe Bryant",
+          "source_file": "document_003.json",
+          "relevance": 3,
+          "reason": "Primary profile; the nickname and the entire Lakers career are its subject."
+        },
+        {
+          "doc_id": 8,
+          "title": "Los Angeles Lakers",
+          "source_file": "document_039.json",
+          "relevance": 3,
+          "reason": "Franchise article covering the two Kobe title eras in depth."
+        },
+        {
+          "doc_id": 5,
+          "title": "2010 NBA Finals",
+          "source_file": "document_058.json",
+          "relevance": 2,
+          "reason": "Kobe's final championship and second straight Finals MVP."
+        },
+        {
+          "doc_id": 87,
+          "title": "2004 NBA Finals",
+          "source_file": "document_056.json",
+          "relevance": 2,
+          "reason": "End of the Shaq-Kobe era; Kobe is a central figure."
+        },
+        {
+          "doc_id": 93,
+          "title": "2008 NBA Finals",
+          "source_file": "document_057.json",
+          "relevance": 2,
+          "reason": "Kobe's first Finals as the Lakers' undisputed leader."
+        },
+        {
+          "doc_id": 41,
+          "title": "Shaquille O'Neal",
+          "source_file": "document_009.json",
+          "relevance": 1,
+          "reason": "Co-star of the three-peat; substantial overlapping Lakers coverage."
+        },
+        {
+          "doc_id": 58,
+          "title": "Bill Russell",
+          "source_file": "document_011.json",
+          "relevance": 0,
+          "reason": "Keyword bait — contains 'Lakers' and the string '81 points' but has nothing to do with Kobe."
+        }
+      ]
+    },
+    {
+      "query": "nikola jokic denver mvp",
+      "category": "entity_multi",
+      "documents": [
+        {
+          "doc_id": 33,
+          "title": "Nikola Jokić",
+          "source_file": "document_005.json",
+          "relevance": 3,
+          "reason": "Primary profile; MVP seasons and Denver tenure are the article's subject."
+        },
+        {
+          "doc_id": 16,
+          "title": "Denver Nuggets",
+          "source_file": "document_043.json",
+          "relevance": 3,
+          "reason": "Franchise article whose modern section is built around Jokić's MVPs and the 2023 title."
+        },
+        {
+          "doc_id": 19,
+          "title": "Double-double",
+          "source_file": "document_096.json",
+          "relevance": 2,
+          "reason": "Jokić is a headline example throughout the triple-double/double-double statistical discussion."
+        },
+        {
+          "doc_id": 51,
+          "title": "Center (basketball)",
+          "source_file": "document_100.json",
+          "relevance": 2,
+          "reason": "Discusses Jokić as the archetype of the modern playmaking center."
+        },
+        {
+          "doc_id": 62,
+          "title": "Assist (basketball)",
+          "source_file": "document_093.json",
+          "relevance": 1,
+          "reason": "Weak connection via his passing profile; the article is a general concept page."
+        }
+      ]
+    },
+    {
+      "query": "greek freak milwaukee bucks star",
+      "category": "entity",
+      "documents": [
+        {
+          "doc_id": 14,
+          "title": "Giannis Antetokounmpo",
+          "source_file": "document_015.json",
+          "relevance": 3,
+          "reason": "Primary profile; the nickname, Greece, and his entire Bucks career."
+        },
+        {
+          "doc_id": 38,
+          "title": "Damian Lillard",
+          "source_file": "document_033.json",
+          "relevance": 2,
+          "reason": "Covers his Bucks tenure paired with Giannis."
+        },
+        {
+          "doc_id": 79,
+          "title": "Kareem Abdul-Jabbar",
+          "source_file": "document_010.json",
+          "relevance": 2,
+          "reason": "Covers the Bucks' first championship era, the franchise's other great big man."
+        },
+        {
+          "doc_id": 47,
+          "title": "Ray Allen",
+          "source_file": "document_032.json",
+          "relevance": 1,
+          "reason": "Bucks tenure is a meaningful but secondary part of the article."
+        },
+        {
+          "doc_id": 39,
+          "title": "Oscar Robertson",
+          "source_file": "document_025.json",
+          "relevance": 1,
+          "reason": "Bucks title run is a late-career section of the article."
+        },
+        {
+          "doc_id": 16,
+          "title": "Denver Nuggets",
+          "source_file": "document_043.json",
+          "relevance": 0,
+          "reason": "Hard negative — mentions 'Greece' only when listing international MVPs, nothing to do with Milwaukee."
+        }
+      ]
+    },
+    {
+      "query": "stephen curry three point shooting",
+      "category": "entity_attribute",
+      "documents": [
+        {
+          "doc_id": 53,
+          "title": "Stephen Curry",
+          "source_file": "document_004.json",
+          "relevance": 3,
+          "reason": "Primary profile; the all-time three-point record is the central claim."
+        },
+        {
+          "doc_id": 68,
+          "title": "Three-point field goal",
+          "source_file": "document_089.json",
+          "relevance": 3,
+          "reason": "Concept article that directly covers the shot and its record holders."
+        },
+        {
+          "doc_id": 83,
+          "title": "Golden State Warriors",
+          "source_file": "document_037.json",
+          "relevance": 2,
+          "reason": "Team article covering the shooting revolution Curry led."
+        },
+        {
+          "doc_id": 47,
+          "title": "Ray Allen",
+          "source_file": "document_032.json",
+          "relevance": 2,
+          "reason": "Held the career three-point record Curry broke."
+        },
+        {
+          "doc_id": 66,
+          "title": "Reggie Miller",
+          "source_file": "document_031.json",
+          "relevance": 2,
+          "reason": "Prior generational three-point volume leader, direct historical comparison."
+        },
+        {
+          "doc_id": 38,
+          "title": "Damian Lillard",
+          "source_file": "document_033.json",
+          "relevance": 1,
+          "reason": "High-volume deep-range shooter; meaningful but secondary."
+        }
+      ]
+    },
+    {
+      "query": "luka doncic slovenia mavericks",
+      "category": "entity_multi",
+      "documents": [
+        {
+          "doc_id": 95,
+          "title": "Luka Dončić",
+          "source_file": "document_016.json",
+          "relevance": 3,
+          "reason": "Primary profile; Slovenia, EuroLeague, and the Dallas tenure."
+        },
+        {
+          "doc_id": 59,
+          "title": "Dallas Mavericks",
+          "source_file": "document_046.json",
+          "relevance": 3,
+          "reason": "Franchise article covering the Dončić era and the trade that ended it."
+        },
+        {
+          "doc_id": 26,
+          "title": "Dirk Nowitzki",
+          "source_file": "document_022.json",
+          "relevance": 2,
+          "reason": "The Mavericks' preceding European superstar; heavily cross-referenced."
+        },
+        {
+          "doc_id": 8,
+          "title": "Los Angeles Lakers",
+          "source_file": "document_039.json",
+          "relevance": 1,
+          "reason": "Covers his current team but only briefly."
+        },
+        {
+          "doc_id": 97,
+          "title": "Victor Wembanyama",
+          "source_file": "document_036.json",
+          "relevance": 1,
+          "reason": "Shared European-prospect context; weak topical overlap."
+        },
+        {
+          "doc_id": 33,
+          "title": "Nikola Jokić",
+          "source_file": "document_005.json",
+          "relevance": 1,
+          "reason": "Shared Balkan/EuroLeague background and frequent statistical comparison."
+        }
+      ]
+    },
+    {
+      "query": "phil jackson coaching triangle",
+      "category": "entity_concept",
+      "documents": [
+        {
+          "doc_id": 57,
+          "title": "Triangle offense",
+          "source_file": "document_069.json",
+          "relevance": 3,
+          "reason": "The system Jackson is synonymous with; he is the article's central practitioner."
+        },
+        {
+          "doc_id": 21,
+          "title": "Chicago Bulls",
+          "source_file": "document_038.json",
+          "relevance": 2,
+          "reason": "Covers the six titles Jackson coached there."
+        },
+        {
+          "doc_id": 8,
+          "title": "Los Angeles Lakers",
+          "source_file": "document_039.json",
+          "relevance": 2,
+          "reason": "Covers the five titles Jackson coached there."
+        },
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 2,
+          "reason": "Extensive discussion of the Jackson coaching relationship."
+        },
+        {
+          "doc_id": 31,
+          "title": "Scottie Pippen",
+          "source_file": "document_029.json",
+          "relevance": 2,
+          "reason": "Most frequent Jackson mentions in the corpus outside the team articles."
+        },
+        {
+          "doc_id": 11,
+          "title": "Kobe Bryant",
+          "source_file": "document_003.json",
+          "relevance": 1,
+          "reason": "Jackson relationship is a recurring but secondary thread."
+        },
+        {
+          "doc_id": 73,
+          "title": "Princeton offense",
+          "source_file": "document_071.json",
+          "relevance": 0,
+          "reason": "Hard negative — mentions 'triangle offense' once in passing; a different, unrelated system."
+        }
+      ]
+    },
+    {
+      "query": "gregg popovich spurs coaching philosophy",
+      "category": "entity",
+      "documents": [
+        {
+          "doc_id": 94,
+          "title": "San Antonio Spurs",
+          "source_file": "document_041.json",
+          "relevance": 3,
+          "reason": "Franchise article where Popovich's tenure and system are the main narrative."
+        },
+        {
+          "doc_id": 44,
+          "title": "Tim Duncan",
+          "source_file": "document_008.json",
+          "relevance": 2,
+          "reason": "The Popovich partnership is a major thread of the profile."
+        },
+        {
+          "doc_id": 96,
+          "title": "2014 NBA Finals",
+          "source_file": "document_061.json",
+          "relevance": 2,
+          "reason": "The clearest showcase of the Spurs' ball-movement system."
+        },
+        {
+          "doc_id": 55,
+          "title": "Kawhi Leonard",
+          "source_file": "document_028.json",
+          "relevance": 1,
+          "reason": "Spurs development and the falling-out are covered, but the article is broader."
+        },
+        {
+          "doc_id": 84,
+          "title": "2013 NBA Finals",
+          "source_file": "document_060.json",
+          "relevance": 1,
+          "reason": "Spurs-side coverage of a Popovich Finals run."
+        }
+      ]
+    },
+    {
+      "query": "pat riley showtime lakers heat",
+      "category": "entity_multi",
+      "documents": [
+        {
+          "doc_id": 13,
+          "title": "Miami Heat",
+          "source_file": "document_042.json",
+          "relevance": 3,
+          "reason": "Riley is the defining executive/coach figure of the article."
+        },
+        {
+          "doc_id": 8,
+          "title": "Los Angeles Lakers",
+          "source_file": "document_039.json",
+          "relevance": 3,
+          "reason": "Covers the Showtime era Riley coached."
+        },
+        {
+          "doc_id": 76,
+          "title": "Magic Johnson",
+          "source_file": "document_006.json",
+          "relevance": 2,
+          "reason": "Showtime is the profile's core; Riley recurs throughout."
+        },
+        {
+          "doc_id": 34,
+          "title": "1987 NBA Finals",
+          "source_file": "document_052.json",
+          "relevance": 2,
+          "reason": "A Riley-coached Showtime championship."
+        },
+        {
+          "doc_id": 60,
+          "title": "1980 NBA Finals",
+          "source_file": "document_050.json",
+          "relevance": 1,
+          "reason": "Start of the Showtime era, but Riley was not yet head coach."
+        },
+        {
+          "doc_id": 98,
+          "title": "Dwyane Wade",
+          "source_file": "document_020.json",
+          "relevance": 1,
+          "reason": "Heat era under Riley's front office; secondary to the profile."
+        }
+      ]
+    },
+    {
+      "query": "boston celtics red auerbach championships",
+      "category": "entity_multi",
+      "documents": [
+        {
+          "doc_id": 86,
+          "title": "Boston Celtics",
+          "source_file": "document_040.json",
+          "relevance": 3,
+          "reason": "Franchise article; Auerbach and the eleven-title run are its spine."
+        },
+        {
+          "doc_id": 58,
+          "title": "Bill Russell",
+          "source_file": "document_011.json",
+          "relevance": 3,
+          "reason": "The Auerbach dynasty's central player; extensive coverage of the partnership."
+        },
+        {
+          "doc_id": 42,
+          "title": "1969 NBA Finals",
+          "source_file": "document_048.json",
+          "relevance": 2,
+          "reason": "The final championship of the Russell/Auerbach dynasty."
+        },
+        {
+          "doc_id": 43,
+          "title": "1976 NBA Finals",
+          "source_file": "document_049.json",
+          "relevance": 2,
+          "reason": "A Celtics title from the Auerbach front-office era."
+        },
+        {
+          "doc_id": 61,
+          "title": "Larry Bird",
+          "source_file": "document_007.json",
+          "relevance": 2,
+          "reason": "Auerbach-built 1980s Celtics; direct coverage of the executive relationship."
+        },
+        {
+          "doc_id": 93,
+          "title": "2008 NBA Finals",
+          "source_file": "document_057.json",
+          "relevance": 1,
+          "reason": "A Celtics championship, but well after the Auerbach era."
+        }
+      ]
+    },
+    {
+      "query": "warriors dynasty titles",
+      "category": "entity_event",
+      "documents": [
+        {
+          "doc_id": 83,
+          "title": "Golden State Warriors",
+          "source_file": "document_037.json",
+          "relevance": 3,
+          "reason": "Franchise article whose modern core is the four-title dynasty."
+        },
+        {
+          "doc_id": 1,
+          "title": "2015 NBA Finals",
+          "source_file": "document_062.json",
+          "relevance": 3,
+          "reason": "The dynasty's first championship."
+        },
+        {
+          "doc_id": 37,
+          "title": "2017 NBA Finals",
+          "source_file": "document_064.json",
+          "relevance": 3,
+          "reason": "The peak Durant-era title."
+        },
+        {
+          "doc_id": 48,
+          "title": "2018 NBA Finals",
+          "source_file": "document_065.json",
+          "relevance": 3,
+          "reason": "The back-to-back title that closed the Durant run."
+        },
+        {
+          "doc_id": 53,
+          "title": "Stephen Curry",
+          "source_file": "document_004.json",
+          "relevance": 2,
+          "reason": "Central player of the dynasty; heavy overlap in coverage."
+        },
+        {
+          "doc_id": 15,
+          "title": "Kevin Durant",
+          "source_file": "document_014.json",
+          "relevance": 2,
+          "reason": "Two Finals MVPs of the dynasty are covered in depth."
+        },
+        {
+          "doc_id": 67,
+          "title": "2019 NBA Finals",
+          "source_file": "document_066.json",
+          "relevance": 2,
+          "reason": "The Finals that ended the dynasty's run — relevant context, not a title."
+        },
+        {
+          "doc_id": 78,
+          "title": "1967 NBA Finals",
+          "source_file": "document_047.json",
+          "relevance": 1,
+          "reason": "A championship series involving the San Francisco Warriors, the same franchise in an earlier era."
+        }
+      ]
+    },
+    {
+      "query": "lakers celtics rivalry finals",
+      "category": "event_multi",
+      "documents": [
+        {
+          "doc_id": 77,
+          "title": "1984 NBA Finals",
+          "source_file": "document_051.json",
+          "relevance": 3,
+          "reason": "A direct Lakers-Celtics Finals, the rivalry's 1980s revival."
+        },
+        {
+          "doc_id": 34,
+          "title": "1987 NBA Finals",
+          "source_file": "document_052.json",
+          "relevance": 3,
+          "reason": "A direct Lakers-Celtics Finals."
+        },
+        {
+          "doc_id": 42,
+          "title": "1969 NBA Finals",
+          "source_file": "document_048.json",
+          "relevance": 3,
+          "reason": "A direct Lakers-Celtics Finals from the Russell era."
+        },
+        {
+          "doc_id": 93,
+          "title": "2008 NBA Finals",
+          "source_file": "document_057.json",
+          "relevance": 3,
+          "reason": "A direct Lakers-Celtics Finals from the modern era."
+        },
+        {
+          "doc_id": 5,
+          "title": "2010 NBA Finals",
+          "source_file": "document_058.json",
+          "relevance": 3,
+          "reason": "A direct Lakers-Celtics Finals, the rivalry's most recent meeting."
+        },
+        {
+          "doc_id": 86,
+          "title": "Boston Celtics",
+          "source_file": "document_040.json",
+          "relevance": 2,
+          "reason": "Team article with a substantial section framing the rivalry."
+        },
+        {
+          "doc_id": 8,
+          "title": "Los Angeles Lakers",
+          "source_file": "document_039.json",
+          "relevance": 2,
+          "reason": "Team article with a substantial section framing the rivalry."
+        }
+      ]
+    },
+    {
+      "query": "magic johnson larry bird 1980s",
+      "category": "entity_multi",
+      "documents": [
+        {
+          "doc_id": 76,
+          "title": "Magic Johnson",
+          "source_file": "document_006.json",
+          "relevance": 3,
+          "reason": "Primary profile of one half of the rivalry."
+        },
+        {
+          "doc_id": 61,
+          "title": "Larry Bird",
+          "source_file": "document_007.json",
+          "relevance": 3,
+          "reason": "Primary profile of the other half."
+        },
+        {
+          "doc_id": 77,
+          "title": "1984 NBA Finals",
+          "source_file": "document_051.json",
+          "relevance": 3,
+          "reason": "Their first head-to-head Finals meeting."
+        },
+        {
+          "doc_id": 34,
+          "title": "1987 NBA Finals",
+          "source_file": "document_052.json",
+          "relevance": 3,
+          "reason": "Their third and final head-to-head Finals."
+        },
+        {
+          "doc_id": 60,
+          "title": "1980 NBA Finals",
+          "source_file": "document_050.json",
+          "relevance": 2,
+          "reason": "Magic's rookie championship that opened the decade."
+        },
+        {
+          "doc_id": 86,
+          "title": "Boston Celtics",
+          "source_file": "document_040.json",
+          "relevance": 1,
+          "reason": "Covers the Bird half of the decade but not the rivalry as its focus."
+        }
+      ]
+    },
+    {
+      "query": "cavaliers comeback down 3-1",
+      "category": "event",
+      "documents": [
+        {
+          "doc_id": 28,
+          "title": "2016 NBA Finals",
+          "source_file": "document_063.json",
+          "relevance": 3,
+          "reason": "The 3-1 comeback is the article's defining event."
+        },
+        {
+          "doc_id": 35,
+          "title": "Cleveland Cavaliers",
+          "source_file": "document_044.json",
+          "relevance": 2,
+          "reason": "Franchise article covering that championship as its high point."
+        },
+        {
+          "doc_id": 18,
+          "title": "LeBron James",
+          "source_file": "document_002.json",
+          "relevance": 2,
+          "reason": "Extensive first-person coverage of the same series."
+        },
+        {
+          "doc_id": 83,
+          "title": "Golden State Warriors",
+          "source_file": "document_037.json",
+          "relevance": 1,
+          "reason": "The other side of the series; covered as the collapse."
+        },
+        {
+          "doc_id": 20,
+          "title": "1–3–1 defense and offense",
+          "source_file": "document_079.json",
+          "relevance": 0,
+          "reason": "Hard negative — matches the literal token '3-1' but is a defensive scheme article."
+        }
+      ]
+    },
+    {
+      "query": "1998 bulls last dance jazz",
+      "category": "event",
+      "documents": [
+        {
+          "doc_id": 17,
+          "title": "1998 NBA Finals",
+          "source_file": "document_055.json",
+          "relevance": 3,
+          "reason": "The exact series: Bulls over Jazz, Jordan's last shot."
+        },
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 2,
+          "reason": "Covers the Last Dance season and that final shot in detail."
+        },
+        {
+          "doc_id": 21,
+          "title": "Chicago Bulls",
+          "source_file": "document_038.json",
+          "relevance": 2,
+          "reason": "Franchise coverage of the season and its breakup."
+        },
+        {
+          "doc_id": 31,
+          "title": "Scottie Pippen",
+          "source_file": "document_029.json",
+          "relevance": 2,
+          "reason": "Covers the same season and the aftermath of the breakup."
+        },
+        {
+          "doc_id": 12,
+          "title": "1993 NBA Finals",
+          "source_file": "document_054.json",
+          "relevance": 1,
+          "reason": "A prior Bulls title; related but the wrong year and opponent."
+        }
+      ]
+    },
+    {
+      "query": "miami heat big three lebron wade",
+      "category": "entity_event",
+      "documents": [
+        {
+          "doc_id": 13,
+          "title": "Miami Heat",
+          "source_file": "document_042.json",
+          "relevance": 3,
+          "reason": "Franchise article covering the Big Three era end to end."
+        },
+        {
+          "doc_id": 84,
+          "title": "2013 NBA Finals",
+          "source_file": "document_060.json",
+          "relevance": 3,
+          "reason": "The Big Three's second title, the era's peak."
+        },
+        {
+          "doc_id": 98,
+          "title": "Dwyane Wade",
+          "source_file": "document_020.json",
+          "relevance": 2,
+          "reason": "Profile centered on the Heat, including the Big Three years."
+        },
+        {
+          "doc_id": 18,
+          "title": "LeBron James",
+          "source_file": "document_002.json",
+          "relevance": 2,
+          "reason": "Covers the Decision and the four-year Miami run."
+        },
+        {
+          "doc_id": 24,
+          "title": "2011 NBA Finals",
+          "source_file": "document_059.json",
+          "relevance": 2,
+          "reason": "The Big Three's first Finals, a loss."
+        },
+        {
+          "doc_id": 96,
+          "title": "2014 NBA Finals",
+          "source_file": "document_061.json",
+          "relevance": 2,
+          "reason": "The Finals that ended the Big Three era."
+        }
+      ]
+    },
+    {
+      "query": "raptors first championship kawhi",
+      "category": "event_entity",
+      "documents": [
+        {
+          "doc_id": 67,
+          "title": "2019 NBA Finals",
+          "source_file": "document_066.json",
+          "relevance": 3,
+          "reason": "Toronto's only title; the article's entire subject."
+        },
+        {
+          "doc_id": 55,
+          "title": "Kawhi Leonard",
+          "source_file": "document_028.json",
+          "relevance": 3,
+          "reason": "Finals MVP of that run; the Toronto season is a major section."
+        },
+        {
+          "doc_id": 10,
+          "title": "Box-and-one defense",
+          "source_file": "document_078.json",
+          "relevance": 2,
+          "reason": "Documents the box-and-one Toronto deployed in that exact Finals — semantically on-point despite low keyword overlap."
+        },
+        {
+          "doc_id": 83,
+          "title": "Golden State Warriors",
+          "source_file": "document_037.json",
+          "relevance": 1,
+          "reason": "The losing opponent; covered from the other side."
+        },
+        {
+          "doc_id": 94,
+          "title": "San Antonio Spurs",
+          "source_file": "document_041.json",
+          "relevance": 1,
+          "reason": "Context for the trade that sent Leonard to Toronto."
+        }
+      ]
+    },
+    {
+      "query": "wilt chamberlain scoring records",
+      "category": "entity_attribute",
+      "documents": [
+        {
+          "doc_id": 49,
+          "title": "Wilt Chamberlain",
+          "source_file": "document_012.json",
+          "relevance": 3,
+          "reason": "Primary profile; the 100-point game and the scoring records are its subject."
+        },
+        {
+          "doc_id": 79,
+          "title": "Kareem Abdul-Jabbar",
+          "source_file": "document_010.json",
+          "relevance": 2,
+          "reason": "The player who passed Chamberlain's career scoring mark."
+        },
+        {
+          "doc_id": 51,
+          "title": "Center (basketball)",
+          "source_file": "document_100.json",
+          "relevance": 2,
+          "reason": "Uses Chamberlain as the historical scoring-center archetype."
+        },
+        {
+          "doc_id": 58,
+          "title": "Bill Russell",
+          "source_file": "document_011.json",
+          "relevance": 2,
+          "reason": "Extensive head-to-head coverage framed around Chamberlain's scoring."
+        },
+        {
+          "doc_id": 75,
+          "title": "Rebound (basketball)",
+          "source_file": "document_092.json",
+          "relevance": 1,
+          "reason": "Chamberlain's rebounding records appear, but scoring is not the focus."
+        },
+        {
+          "doc_id": 80,
+          "title": "Full-court press",
+          "source_file": "document_076.json",
+          "relevance": 0,
+          "reason": "Hard negative — matches '100 points' but refers to an unrelated high-school scoring streak."
+        }
+      ]
+    },
+    {
+      "query": "all time leading scorer career points",
+      "category": "attribute",
+      "documents": [
+        {
+          "doc_id": 79,
+          "title": "Kareem Abdul-Jabbar",
+          "source_file": "document_010.json",
+          "relevance": 3,
+          "reason": "Held the all-time scoring record for 39 years; central claim of the article."
+        },
+        {
+          "doc_id": 18,
+          "title": "LeBron James",
+          "source_file": "document_002.json",
+          "relevance": 3,
+          "reason": "Current all-time scoring leader; the record is a headline fact."
+        },
+        {
+          "doc_id": 15,
+          "title": "Kevin Durant",
+          "source_file": "document_014.json",
+          "relevance": 2,
+          "reason": "Article repeatedly positions him on the all-time scoring list."
+        },
+        {
+          "doc_id": 11,
+          "title": "Kobe Bryant",
+          "source_file": "document_003.json",
+          "relevance": 2,
+          "reason": "All-time scoring standing is a recurring theme of the profile."
+        },
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 2,
+          "reason": "Career scoring average record and top-five career total."
+        },
+        {
+          "doc_id": 49,
+          "title": "Wilt Chamberlain",
+          "source_file": "document_012.json",
+          "relevance": 2,
+          "reason": "Former career scoring leader; extensive scoring-record coverage."
+        },
+        {
+          "doc_id": 9,
+          "title": "Basketball statistics",
+          "source_file": "document_097.json",
+          "relevance": 1,
+          "reason": "Explains points as a tracked statistic but names no record holders."
+        }
+      ]
+    },
+    {
+      "query": "three point record made threes",
+      "category": "attribute",
+      "documents": [
+        {
+          "doc_id": 53,
+          "title": "Stephen Curry",
+          "source_file": "document_004.json",
+          "relevance": 3,
+          "reason": "Holder of the career and single-season three-point records."
+        },
+        {
+          "doc_id": 47,
+          "title": "Ray Allen",
+          "source_file": "document_032.json",
+          "relevance": 3,
+          "reason": "Previous career three-point record holder."
+        },
+        {
+          "doc_id": 68,
+          "title": "Three-point field goal",
+          "source_file": "document_089.json",
+          "relevance": 3,
+          "reason": "Concept article covering the shot's history and its records."
+        },
+        {
+          "doc_id": 66,
+          "title": "Reggie Miller",
+          "source_file": "document_031.json",
+          "relevance": 2,
+          "reason": "Held the career record before Allen; a defining part of the profile."
+        },
+        {
+          "doc_id": 65,
+          "title": "James Harden",
+          "source_file": "document_027.json",
+          "relevance": 2,
+          "reason": "Ranks near the top of the all-time three-point list."
+        },
+        {
+          "doc_id": 38,
+          "title": "Damian Lillard",
+          "source_file": "document_033.json",
+          "relevance": 2,
+          "reason": "High-volume three-point scorer with record-adjacent coverage."
+        }
+      ]
+    },
+    {
+      "query": "defensive player of the year award",
+      "category": "attribute",
+      "documents": [
+        {
+          "doc_id": 36,
+          "title": "Hakeem Olajuwon",
+          "source_file": "document_013.json",
+          "relevance": 3,
+          "reason": "Two-time winner; the award is discussed more here than in any other document."
+        },
+        {
+          "doc_id": 55,
+          "title": "Kawhi Leonard",
+          "source_file": "document_028.json",
+          "relevance": 3,
+          "reason": "Two-time winner; central to the profile's identity."
+        },
+        {
+          "doc_id": 14,
+          "title": "Giannis Antetokounmpo",
+          "source_file": "document_015.json",
+          "relevance": 3,
+          "reason": "Winner, with substantial defensive-award coverage."
+        },
+        {
+          "doc_id": 82,
+          "title": "Kevin Garnett",
+          "source_file": "document_021.json",
+          "relevance": 3,
+          "reason": "Winner; the award anchors his defensive reputation section."
+        },
+        {
+          "doc_id": 97,
+          "title": "Victor Wembanyama",
+          "source_file": "document_036.json",
+          "relevance": 3,
+          "reason": "Unanimous winner; a headline section of the article."
+        },
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 2,
+          "reason": "Winner, but the award is a minor part of a very long profile."
+        },
+        {
+          "doc_id": 89,
+          "title": "Block (basketball)",
+          "source_file": "document_095.json",
+          "relevance": 1,
+          "reason": "Concept page connected to defensive impact but not the award itself."
+        }
+      ]
+    },
+    {
+      "query": "nba mvp most valuable player winners",
+      "category": "ambiguous_attribute",
+      "documents": [
+        {
+          "doc_id": 79,
+          "title": "Kareem Abdul-Jabbar",
+          "source_file": "document_010.json",
+          "relevance": 3,
+          "reason": "Record six MVP awards; the strongest single answer."
+        },
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 3,
+          "reason": "Five-time MVP with heavy award coverage."
+        },
+        {
+          "doc_id": 18,
+          "title": "LeBron James",
+          "source_file": "document_002.json",
+          "relevance": 3,
+          "reason": "Four-time MVP with heavy award coverage."
+        },
+        {
+          "doc_id": 33,
+          "title": "Nikola Jokić",
+          "source_file": "document_005.json",
+          "relevance": 3,
+          "reason": "Three-time MVP; the award dominates the modern sections."
+        },
+        {
+          "doc_id": 58,
+          "title": "Bill Russell",
+          "source_file": "document_011.json",
+          "relevance": 2,
+          "reason": "Five-time MVP, though the article leans on championships."
+        },
+        {
+          "doc_id": 53,
+          "title": "Stephen Curry",
+          "source_file": "document_004.json",
+          "relevance": 2,
+          "reason": "Two-time MVP including the only unanimous selection."
+        },
+        {
+          "doc_id": 23,
+          "title": "Steve Nash",
+          "source_file": "document_018.json",
+          "relevance": 2,
+          "reason": "Back-to-back MVP; a defining and much-debated part of the profile."
+        }
+      ]
+    },
+    {
+      "query": "triple double record",
+      "category": "attribute",
+      "documents": [
+        {
+          "doc_id": 39,
+          "title": "Oscar Robertson",
+          "source_file": "document_025.json",
+          "relevance": 3,
+          "reason": "Averaged a triple-double for a season and long held the career record."
+        },
+        {
+          "doc_id": 19,
+          "title": "Double-double",
+          "source_file": "document_096.json",
+          "relevance": 3,
+          "reason": "Concept article that defines and tabulates triple-doubles."
+        },
+        {
+          "doc_id": 33,
+          "title": "Nikola Jokić",
+          "source_file": "document_005.json",
+          "relevance": 3,
+          "reason": "Highest triple-double density in the corpus; a core theme of the profile."
+        },
+        {
+          "doc_id": 95,
+          "title": "Luka Dončić",
+          "source_file": "document_016.json",
+          "relevance": 2,
+          "reason": "Heavy triple-double coverage including record-adjacent marks."
+        },
+        {
+          "doc_id": 76,
+          "title": "Magic Johnson",
+          "source_file": "document_006.json",
+          "relevance": 2,
+          "reason": "Playoff triple-double records are covered."
+        },
+        {
+          "doc_id": 65,
+          "title": "James Harden",
+          "source_file": "document_027.json",
+          "relevance": 2,
+          "reason": "Substantial triple-double statistical coverage."
+        }
+      ]
+    },
+    {
+      "query": "finals mvp winners",
+      "category": "attribute",
+      "documents": [
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 3,
+          "reason": "Six Finals appearances, six Finals MVPs — the canonical answer."
+        },
+        {
+          "doc_id": 18,
+          "title": "LeBron James",
+          "source_file": "document_002.json",
+          "relevance": 3,
+          "reason": "Four Finals MVPs across three franchises."
+        },
+        {
+          "doc_id": 55,
+          "title": "Kawhi Leonard",
+          "source_file": "document_028.json",
+          "relevance": 3,
+          "reason": "Finals MVP with two different franchises; the award defines the profile."
+        },
+        {
+          "doc_id": 72,
+          "title": "Jerry West",
+          "source_file": "document_026.json",
+          "relevance": 2,
+          "reason": "The first Finals MVP and the only one from a losing team."
+        },
+        {
+          "doc_id": 76,
+          "title": "Magic Johnson",
+          "source_file": "document_006.json",
+          "relevance": 2,
+          "reason": "Three Finals MVPs including the famous rookie performance."
+        },
+        {
+          "doc_id": 44,
+          "title": "Tim Duncan",
+          "source_file": "document_008.json",
+          "relevance": 2,
+          "reason": "Three Finals MVPs across the Spurs dynasty."
+        }
+      ]
+    },
+    {
+      "query": "pick and roll offense",
+      "category": "concept",
+      "documents": [
+        {
+          "doc_id": 30,
+          "title": "Pick and roll",
+          "source_file": "document_068.json",
+          "relevance": 3,
+          "reason": "The concept article itself."
+        },
+        {
+          "doc_id": 74,
+          "title": "Screen (sports)",
+          "source_file": "document_084.json",
+          "relevance": 3,
+          "reason": "Defines the screening action the play is built on."
+        },
+        {
+          "doc_id": 63,
+          "title": "Basketball moves",
+          "source_file": "document_085.json",
+          "relevance": 2,
+          "reason": "Covers the pick and roll among the core offensive actions."
+        },
+        {
+          "doc_id": 81,
+          "title": "Point guard",
+          "source_file": "document_099.json",
+          "relevance": 2,
+          "reason": "Describes the ball handler's role in running the action."
+        },
+        {
+          "doc_id": 23,
+          "title": "Steve Nash",
+          "source_file": "document_018.json",
+          "relevance": 2,
+          "reason": "The profile's central skill is pick-and-roll orchestration."
+        },
+        {
+          "doc_id": 25,
+          "title": "Man-to-man defense",
+          "source_file": "document_075.json",
+          "relevance": 1,
+          "reason": "Covers defending screens; relevant from the other side."
+        },
+        {
+          "doc_id": 64,
+          "title": "Motion offense",
+          "source_file": "document_070.json",
+          "relevance": 1,
+          "reason": "A screen-heavy system, but the article does not center the action."
+        },
+        {
+          "doc_id": 57,
+          "title": "Triangle offense",
+          "source_file": "document_069.json",
+          "relevance": 1,
+          "reason": "A screen-and-cut system that uses the action, but is not organized around it."
+        }
+      ]
+    },
+    {
+      "query": "zone defense strategy",
+      "category": "ambiguous_concept",
+      "documents": [
+        {
+          "doc_id": 4,
+          "title": "Zone defense",
+          "source_file": "document_074.json",
+          "relevance": 3,
+          "reason": "The primary concept article for the query."
+        },
+        {
+          "doc_id": 99,
+          "title": "Match-up zone defense",
+          "source_file": "document_077.json",
+          "relevance": 3,
+          "reason": "A specific zone scheme, directly on topic."
+        },
+        {
+          "doc_id": 20,
+          "title": "1–3–1 defense and offense",
+          "source_file": "document_079.json",
+          "relevance": 3,
+          "reason": "A named zone alignment, directly on topic."
+        },
+        {
+          "doc_id": 10,
+          "title": "Box-and-one defense",
+          "source_file": "document_078.json",
+          "relevance": 3,
+          "reason": "A hybrid zone scheme, directly on topic."
+        },
+        {
+          "doc_id": 25,
+          "title": "Man-to-man defense",
+          "source_file": "document_075.json",
+          "relevance": 2,
+          "reason": "The contrasting scheme; defined largely in opposition to zone."
+        },
+        {
+          "doc_id": 80,
+          "title": "Full-court press",
+          "source_file": "document_076.json",
+          "relevance": 2,
+          "reason": "A pressing scheme with zone variants."
+        },
+        {
+          "doc_id": 73,
+          "title": "Princeton offense",
+          "source_file": "document_071.json",
+          "relevance": 1,
+          "reason": "Discusses attacking zones, but from the offensive side."
+        }
+      ]
+    },
+    {
+      "query": "small ball lineups modern nba",
+      "category": "concept_multi",
+      "documents": [
+        {
+          "doc_id": 22,
+          "title": "Small ball (basketball)",
+          "source_file": "document_080.json",
+          "relevance": 3,
+          "reason": "The concept article itself."
+        },
+        {
+          "doc_id": 83,
+          "title": "Golden State Warriors",
+          "source_file": "document_037.json",
+          "relevance": 2,
+          "reason": "The franchise most identified with the tactic; covered explicitly."
+        },
+        {
+          "doc_id": 51,
+          "title": "Center (basketball)",
+          "source_file": "document_100.json",
+          "relevance": 2,
+          "reason": "Covers how the position changed under small-ball trends."
+        },
+        {
+          "doc_id": 100,
+          "title": "Basketball positions",
+          "source_file": "document_098.json",
+          "relevance": 2,
+          "reason": "Covers positional blurring, the core of the small-ball idea."
+        },
+        {
+          "doc_id": 7,
+          "title": "Run and gun (basketball)",
+          "source_file": "document_081.json",
+          "relevance": 2,
+          "reason": "The adjacent up-tempo style the tactic pairs with."
+        },
+        {
+          "doc_id": 50,
+          "title": "Houston Rockets",
+          "source_file": "document_045.json",
+          "relevance": 1,
+          "reason": "Ran the most extreme small-ball experiment; mentioned briefly."
+        }
+      ]
+    },
+    {
+      "query": "dunk highlights",
+      "category": "ambiguous_concept",
+      "documents": [
+        {
+          "doc_id": 54,
+          "title": "Slam dunk",
+          "source_file": "document_090.json",
+          "relevance": 3,
+          "reason": "The concept article, including dunk-contest history."
+        },
+        {
+          "doc_id": 32,
+          "title": "Alley-oop",
+          "source_file": "document_091.json",
+          "relevance": 3,
+          "reason": "A dunk-finishing play, directly on topic."
+        },
+        {
+          "doc_id": 63,
+          "title": "Basketball moves",
+          "source_file": "document_085.json",
+          "relevance": 2,
+          "reason": "Covers dunking among the finishing moves."
+        },
+        {
+          "doc_id": 90,
+          "title": "Fast break",
+          "source_file": "document_083.json",
+          "relevance": 1,
+          "reason": "Common dunk context, but the article is about transition offense."
+        },
+        {
+          "doc_id": 70,
+          "title": "Layup",
+          "source_file": "document_088.json",
+          "relevance": 1,
+          "reason": "The adjacent finishing concept, explicitly contrasted with the dunk."
+        },
+        {
+          "doc_id": 88,
+          "title": "Michael Jordan",
+          "source_file": "document_001.json",
+          "relevance": 1,
+          "reason": "Dunk-contest wins and iconic dunks appear but are a small part."
+        }
+      ]
+    },
+    {
+      "query": "nba championship",
+      "category": "ambiguous_broad",
+      "documents": [
+        {
+          "doc_id": 86,
+          "title": "Boston Celtics",
+          "source_file": "document_040.json",
+          "relevance": 3,
+          "reason": "Most championships in league history; the article is organized around them."
+        },
+        {
+          "doc_id": 8,
+          "title": "Los Angeles Lakers",
+          "source_file": "document_039.json",
+          "relevance": 3,
+          "reason": "Second-most championships, covered era by era."
+        },
+        {
+          "doc_id": 21,
+          "title": "Chicago Bulls",
+          "source_file": "document_038.json",
+          "relevance": 3,
+          "reason": "Six championships form the article's core narrative."
+        },
+        {
+          "doc_id": 83,
+          "title": "Golden State Warriors",
+          "source_file": "document_037.json",
+          "relevance": 3,
+          "reason": "Multiple championship eras across seven decades."
+        },
+        {
+          "doc_id": 94,
+          "title": "San Antonio Spurs",
+          "source_file": "document_041.json",
+          "relevance": 3,
+          "reason": "Five championships form the article's core narrative."
+        },
+        {
+          "doc_id": 58,
+          "title": "Bill Russell",
+          "source_file": "document_011.json",
+          "relevance": 2,
+          "reason": "Eleven championships, the most by any player."
+        },
+        {
+          "doc_id": 28,
+          "title": "2016 NBA Finals",
+          "source_file": "document_063.json",
+          "relevance": 2,
+          "reason": "A single championship series — relevant but narrow for a broad query."
+        },
+        {
+          "doc_id": 42,
+          "title": "1969 NBA Finals",
+          "source_file": "document_048.json",
+          "relevance": 2,
+          "reason": "A single championship series — relevant but narrow."
+        },
+        {
+          "doc_id": 17,
+          "title": "1998 NBA Finals",
+          "source_file": "document_055.json",
+          "relevance": 2,
+          "reason": "A single championship series — relevant but narrow."
+        },
+        {
+          "doc_id": 35,
+          "title": "Cleveland Cavaliers",
+          "source_file": "document_044.json",
+          "relevance": 2,
+          "reason": "Franchise article whose peak is its lone championship."
+        },
+        {
+          "doc_id": 30,
+          "title": "Pick and roll",
+          "source_file": "document_068.json",
+          "relevance": 0,
+          "reason": "Hard negative — a tactics page with no championship content."
+        }
+      ]
+    }
+  ]
+}

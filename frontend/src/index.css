@@ -52,6 +52,12 @@ button {
   text-decoration: underline;
 }
 
+.result .score {
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #999;
+}
+
 .result .url {
   font-size: 0.8rem;
   color: #006621;
