@@ -12,12 +12,12 @@ db = SessionLocal() # start the database session?
 for file_path in DOCS_DIR.glob("*.json"): # find every file in this directory ending with `.json`
     with open(file_path, "r") as file:
         data = json.load(file)
-    document = Document(
+    doc = Document(
         title=data["title"],
         url=data["url"],
         content=data["content"]
     )
-    db.add(document)
+    db.add(doc)
 
 db.commit()
 db.close()

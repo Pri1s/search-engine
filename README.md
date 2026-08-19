@@ -1,6 +1,6 @@
 # Search Engine
 
-A domain-specific (vertical) search engine, currently focused on basketball. A FastAPI backend backed by PostgreSQL, with document create/read endpoints, a JSON-based ingestion script, and a work-in-progress inverted index for search.
+A domain-specific (vertical) search engine, currently focused on basketball. A FastAPI backend backed by PostgreSQL, with document create/read endpoints, a JSON-based ingestion script, and a BM25-ranked search endpoint backed by an in-memory inverted index.
 
 ## Prerequisites
 
@@ -48,8 +48,43 @@ Sample documents live as JSON files in `data/documents/` (one file per document,
 
 ```bash
 cd backend
-uv run ingest_docs.py
+uv run ingest_documents.py
 ```
+
+To fetch a fresh corpus of curated basketball Wikipedia articles into `data/documents/` (regenerates the sample documents used above):
+
+```bash
+uv run scripts/fetch_wikipedia_corpus.py
+```
+
+## Searching
+
+The inverted index is built from the documents in the database at server startup. Query it via:
+
+```bash
+curl "http://localhost:8000/search?q=michael+jordan"
+```
+
+Results are ranked with BM25 (see [Search ranking](#search-ranking) below).
+
+## Frontend
+
+A minimal React (Vite) UI for searching, in `frontend/`. It expects the API server to be running at `http://localhost:8000`.
+
+1. **Install dependencies**
+
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. **Run the dev server**
+
+   ```bash
+   npm run dev
+   ```
+
+   The UI will be available at [http://localhost:5173](http://localhost:5173).
 
 ## Stopping
 
@@ -61,7 +96,7 @@ Add `-v` to also delete the Postgres data volume (wipes the database).
 
 ## Search ranking
 
-`backend/search/index.py` currently scores documents with TF-IDF and is being extended toward BM25, which additionally saturates term frequency and normalizes for document length:
+`backend/search/index.py` scores documents with BM25, which builds on TF-IDF by additionally saturating term frequency and normalizing for document length:
 
 ```
 score(D, Q) = Σ IDF(qi) · f(qi, D) · (k1 + 1)
@@ -73,20 +108,29 @@ score(D, Q) = Σ IDF(qi) · f(qi, D) · (k1 + 1)
 - `|D|` / `avgdl` — length of `D` (in tokens) and the average document length across the corpus
 - `k1` (typically 1.2–2.0) — controls term-frequency saturation; higher values let repeated terms keep adding score for longer
 - `b` (typically 0.75) — controls how strongly document length is normalized; `0` disables length normalization, `1` applies it fully
-- `IDF(qi)` — inverse document frequency, typically `ln((N - n(qi) + 0.5) / (n(qi) + 0.5) + 1)`, where `N` is the total number of documents and `n(qi)` is the number of documents containing `qi`
+- `IDF(qi)` — inverse document frequency, computed here as `ln(N / n(qi))`, where `N` is the total number of documents and `n(qi)` is the number of documents containing `qi`
 
 ## Project layout
 
 ```
 backend/
-  main.py           # FastAPI app & routes
-  database.py       # SQLAlchemy engine/session setup
-  models.py         # SQLAlchemy ORM models
-  schemas.py        # Pydantic request/response schemas
-  ingest_docs.py    # Loads JSON documents from data/documents/ into the database
+  main.py               # FastAPI app & routes (including /search)
+  database.py           # SQLAlchemy engine/session setup
+  models.py             # SQLAlchemy ORM models
+  schemas.py            # Pydantic request/response schemas
+  ingest_documents.py   # Loads JSON documents from data/documents/ into the database
+  index_documents.py    # Builds the in-memory inverted index from documents at startup
   search/
-    index.py        # Inverted index for search ranking (work in progress, not yet wired into the API)
+    tokenizer.py        # Lowercases & splits text into word tokens
+    index.py            # Inverted index & BM25 search ranking
+frontend/
+  src/
+    App.jsx              # React search UI, queries the /search endpoint
+  vite.config.js          # Vite dev server config
+scripts/
+  fetch_wikipedia_corpus.py  # Fetches the curated basketball corpus from Wikipedia into data/documents/
 data/
-  documents/         # Sample documents (JSON) used by ingest_docs.py
-docker-compose.yml   # Local Postgres container
+  documents/             # Sample documents (JSON) used by ingest_documents.py
+  metadata.json          # Metadata about the fetched corpus
+docker-compose.yml       # Local Postgres container
 ```
