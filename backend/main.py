@@ -11,6 +11,7 @@ from index_documents import build_index
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # the following line: look at my SQLAlchemy models & make sure the database tables exist
     Base.metadata.create_all(bind=engine) # database tables need to exist prior to us building the index
     app.state.index = build_index()
     # everything prior to the yield is is interpretted as the enter/setup phase: runs once when FastAPI starts
@@ -24,9 +25,9 @@ app = FastAPI(lifespan=lifespan)
 # allows the static frontend (served from a different origin, e.g. a local file server) to call the API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["GET"],
-    allow_headers=["*"],
+    allow_origins=["*"], # requests from any origin are allowed
+    allow_methods=["GET"], # only GET methods are permitted
+    allow_headers=["*"], # allows any HTTP request headers
 )
 
 @app.get("/")

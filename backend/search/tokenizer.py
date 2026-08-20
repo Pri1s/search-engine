@@ -2,5 +2,5 @@ import re # for working with RegEx
 
 def tokenize(text: str):
     text = text.lower()
-    words = re.findall(r"\b[a-z]+\b", text) # find complete words made of only lowercase letter
-    return words # returns an array of words
+    words = re.findall(r"\b[\w]+\b", text) # use the unicode standard to identify query tokens
+    return words # returns an array of tokens
