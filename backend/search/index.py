@@ -51,7 +51,10 @@ class InvertedIndex:
                 t = len(self.body_index[token])
                 # IDF formula: log(N/t) where `N` is the total number of documents & `t` is the number of documents w/ out keyword
                 # we'll evolve our IDF formula into the standard BM25 IDF formula: log((N - t + 0.5) / (t + 0.5))
-                idf = math.log((self.document_count - t + 0.5) / (t + 0.5))
+                # original: idf = math.log((self.document_count - t + 0.5) / (t + 0.5))
+                # the original IDF formula gave common words (words that occured in at least N/2 documents) a negative weight, leading to possible negative scores for some documents
+                # we'll use a variant of the IDF formula that instead gives them a value close to zero
+                idf = math.log(1 + (self.document_count - t + 0.5) / (t + 0.5))
                 for doc_id, term_frequency in self.body_index[token].items(): # the score for each document is computed/added here
                     doc_len = self.doc_lens[doc_id]
                     len_normalization = (1 - b + b * (doc_len / self.avg_document_len))
