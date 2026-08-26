@@ -31,7 +31,7 @@ def ndcg_at_k(ranked_results, query_documents, k):
 
     dcg = 0
     for rank, result in enumerate(ranked_results[:k], start=1):
-        doc = docs_by_source_file.get(result["document"]["source_file"])
+        doc = docs_by_source_file.get(result["document"]["source_file"]) # map the retrieved doc. to its adjacent in the benchmark set
         relevance = doc["relevance"] if doc else 0 # unjudged results contribute no gain
         dcg += discounted_gain(relevance, rank)
 
@@ -40,4 +40,4 @@ def ndcg_at_k(ranked_results, query_documents, k):
 
     if idcg == 0: # no relevant docs judged for this query at all - avoid dividing by zero
         return 0.0
-    return dcg / idcg
+    return dcg / idcg # returns normalized score

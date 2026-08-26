@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 class DocumentBase(BaseModel):
@@ -9,6 +10,12 @@ class DocumentBase(BaseModel):
 # basic class we use for the creation of a new document
 class DocumentCreate(DocumentBase):
     pass
+
+# used for partial updates: every field is optional so the client can send only what's changing
+class DocumentUpdate(BaseModel):
+    title: Optional[str] = None
+    url: Optional[str] = None
+    content: Optional[str] = None
 
 # our response object back to the client per API operation
 class DocumentResponse(DocumentBase):

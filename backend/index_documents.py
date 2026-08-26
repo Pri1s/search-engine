@@ -1,8 +1,13 @@
+from pathlib import Path
+
 from database import SessionLocal # so we can create a database session
 from models import Document # so we can query the docs table
 
 from search.tokenizer import tokenize
 from search.index import InvertedIndex
+
+BASE_DIR = Path(__file__).resolve().parent.parent # root directory
+INDEX_PATH = BASE_DIR / "data" / "index.pkl"
 
 def build_index():
     db = SessionLocal()
@@ -20,3 +25,7 @@ def build_index():
         return index
     finally:
         db.close()
+
+if __name__ == "__main__":
+    index = build_index()
+    index.save(INDEX_PATH)
