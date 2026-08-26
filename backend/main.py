@@ -7,13 +7,18 @@ from database import Base, get_db, engine
 from models import Document
 from schemas import DocumentCreate, DocumentResponse
 from search.tokenizer import tokenize
-from index_documents import build_index
+from search.index import InvertedIndex
+from index_documents import build_index, INDEX_PATH
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # the following line: look at my SQLAlchemy models & make sure the database tables exist
     Base.metadata.create_all(bind=engine) # database tables need to exist prior to us building the index
-    app.state.index = build_index()
+    try:
+        app.state.index = InvertedIndex.load(INDEX_PATH)
+    except FileNotFoundError:
+        app.state.index = build_index()
+        app.state.index.save(INDEX_PATH)
     # everything prior to the yield is is interpretted as the enter/setup phase: runs once when FastAPI starts
     # the yielded period is the resource-is-active 
     # FastAPI serves requests while we're here

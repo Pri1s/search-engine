@@ -1,4 +1,5 @@
 import math
+import pickle
 from collections import defaultdict, Counter # `Counter` counts how many times each value occurs in an iterable
 
 # the inverted index uses words as keys and an integer array of document indexes as values
@@ -75,3 +76,12 @@ class InvertedIndex:
             key=lambda x: x[1], # sort by the score value in the tuple (doc_id, score)
             reverse=True # sort in descending order
         )
+
+    def save(self, path):
+        with open(path, "wb") as f:
+            pickle.dump(self, f)
+
+    @staticmethod
+    def load(path):
+        with open(path, "rb") as f:
+            return pickle.load(f)

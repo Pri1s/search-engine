@@ -1,0 +1,482 @@
+{
+  "run_id": "2026-08-22T19-35-27",
+  "benchmark_version": "2.0",
+  "timestamp": "2026-08-22T19:35:27.353505-05:00",
+  "config": {
+    "binary_relevance_threshold": 2,
+    "k_values": [
+      1,
+      3,
+      5
+    ],
+    "ndcg_gain": "exponential",
+    "idcg_source": "judged_pool",
+    "unjudged_relevance": 0,
+    "document_key": "source_file"
+  },
+  "overall_metrics": {
+    "mrr": 0.95,
+    "precision_at_k": {
+      "1": 0.9,
+      "3": 0.678,
+      "5": 0.493
+    },
+    "ndcg_at_k": {
+      "1": 0.814,
+      "3": 0.787,
+      "5": 0.767
+    }
+  },
+  "queries": [
+    {
+      "query_id": "entity_001",
+      "query": "greatest of all time debate jordan lebron",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.884,
+        "5": 0.831
+      }
+    },
+    {
+      "query_id": "entity_002",
+      "query": "black mamba lakers shooting guard",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.856,
+        "5": 0.793
+      }
+    },
+    {
+      "query_id": "entity_003",
+      "query": "serbian center denver mvp",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 0.429,
+        "3": 0.843,
+        "5": 0.806
+      }
+    },
+    {
+      "query_id": "entity_004",
+      "query": "greek freak milwaukee superstar",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.333,
+        "5": 0.2
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.861,
+        "5": 0.782
+      }
+    },
+    {
+      "query_id": "entity_005",
+      "query": "curry three point revolution warriors",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 0.429,
+        "3": 0.858,
+        "5": 0.795
+      }
+    },
+    {
+      "query_id": "team_001",
+      "query": "warriors dynasty bay area titles",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.333,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.722,
+        "5": 0.684
+      }
+    },
+    {
+      "query_id": "team_002",
+      "query": "boston celtics championship history",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.8
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.899
+      }
+    },
+    {
+      "query_id": "team_003",
+      "query": "spurs popovich duncan era success",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.8
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.924
+      }
+    },
+    {
+      "query_id": "team_004",
+      "query": "miami heat big three era",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.333,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.674,
+        "5": 0.646
+      }
+    },
+    {
+      "query_id": "historical_001",
+      "query": "celtics lakers rivalry in the 1980s",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.8
+      },
+      "ndcg_at_k": {
+        "1": 0.429,
+        "3": 0.495,
+        "5": 0.612
+      }
+    },
+    {
+      "query_id": "historical_002",
+      "query": "bulls first title against the lakers",
+      "reciprocal_rank": 0.5,
+      "precision_at_k": {
+        "1": 0.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 0.143,
+        "3": 0.615,
+        "5": 0.53
+      }
+    },
+    {
+      "query_id": "historical_003",
+      "query": "jordan final championship with chicago 1998",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.965
+      }
+    },
+    {
+      "query_id": "historical_004",
+      "query": "bill russell celtics dynasty 1960s",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.856,
+        "5": 0.793
+      }
+    },
+    {
+      "query_id": "finals_001",
+      "query": "cavaliers comeback from 3-1 down",
+      "reciprocal_rank": 0.5,
+      "precision_at_k": {
+        "1": 0.0,
+        "3": 0.667,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 0.0,
+        "3": 0.519,
+        "5": 0.596
+      }
+    },
+    {
+      "query_id": "finals_002",
+      "query": "dirk nowitzki beats the heat superteam",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.923,
+        "5": 0.99
+      }
+    },
+    {
+      "query_id": "finals_003",
+      "query": "kawhi leonard finals mvp toronto",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.972
+      }
+    },
+    {
+      "query_id": "finals_004",
+      "query": "pistons upset shaq and kobe lakers",
+      "reciprocal_rank": 0.5,
+      "precision_at_k": {
+        "1": 0.0,
+        "3": 0.667,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 0.143,
+        "3": 0.423,
+        "5": 0.684
+      }
+    },
+    {
+      "query_id": "multi_001",
+      "query": "point guard assist records passing",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.884,
+        "5": 0.818
+      }
+    },
+    {
+      "query_id": "multi_002",
+      "query": "defensive scheme to stop an elite scorer",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.333,
+        "5": 0.2
+      },
+      "ndcg_at_k": {
+        "1": 0.429,
+        "3": 0.289,
+        "5": 0.234
+      }
+    },
+    {
+      "query_id": "multi_003",
+      "query": "showtime lakers fast break era",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "ndcg_at_k": {
+        "1": 0.429,
+        "3": 0.615,
+        "5": 0.809
+      }
+    },
+    {
+      "query_id": "attribute_001",
+      "query": "dominant big men in the paint",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.818,
+        "5": 0.662
+      }
+    },
+    {
+      "query_id": "attribute_002",
+      "query": "european international stars in the nba",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.862,
+        "5": 0.763
+      }
+    },
+    {
+      "query_id": "strategy_001",
+      "query": "triangle offense phil jackson chicago",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.92
+      }
+    },
+    {
+      "query_id": "strategy_002",
+      "query": "ball screen offense roll to the basket",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.884,
+        "5": 0.831
+      }
+    },
+    {
+      "query_id": "strategy_003",
+      "query": "small ball pace and space lineups",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.818,
+        "5": 0.758
+      }
+    },
+    {
+      "query_id": "concept_001",
+      "query": "how is a triple double recorded",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.667,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.856,
+        "5": 0.832
+      }
+    },
+    {
+      "query_id": "ambiguous_001",
+      "query": "the block",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.333,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.745,
+        "5": 0.831
+      }
+    },
+    {
+      "query_id": "ambiguous_002",
+      "query": "magic",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.333,
+        "5": 0.4
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.674,
+        "5": 0.687
+      }
+    },
+    {
+      "query_id": "ambiguous_003",
+      "query": "the dream",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 0.333,
+        "5": 0.2
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.674,
+        "5": 0.647
+      }
+    },
+    {
+      "query_id": "ambiguous_004",
+      "query": "the answer crossover",
+      "reciprocal_rank": 1.0,
+      "precision_at_k": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.6
+      },
+      "ndcg_at_k": {
+        "1": 1.0,
+        "3": 0.959,
+        "5": 0.928
+      }
+    }
+  ]
+}

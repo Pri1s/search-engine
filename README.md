@@ -134,11 +134,20 @@ Titles are short and roughly uniform in length, so there is no length normalizat
 
 ## Evaluation
 
-`eval/benchmark.json` holds a hand-judged relevance set for measuring ranking changes against the 100-document corpus: 30 queries across categories (entity lookups, multi-term, team, championship/finals, historical events, strategy, ambiguous), each with graded relevance judgements (`0`–`3`) and a short reason per judged document.
+`backend/eval/benchmark.json` holds a hand-judged relevance set for measuring ranking changes against the 100-document corpus: 30 queries across categories (entity lookups, multi-term, team, championship/finals, historical events, strategy, ambiguous), each with graded relevance judgements (`0`–`3`) and a short reason per judged document.
 
 `evaluation_config` records how the judgements are meant to be scored — binary relevance at `>= 2`, metrics at `k = 1, 3, 5`, exponential nDCG gain with the ideal ranking taken from the judged pool, unjudged documents treated as non-relevant, and documents keyed by their `source_file` in `data/documents/`.
 
-The benchmark is currently data only; there is no runner script in the repo yet.
+### Running the eval
+
+With the API server running (see [Run the API server](#setup)):
+
+```bash
+cd backend
+uv run eval/eval.py
+```
+
+This queries `/search` for every benchmark query, computes MRR, precision@k, and nDCG@k (overall and per-query), and writes a timestamped run file to `backend/eval/runs/`.
 
 ## Project layout
 
@@ -153,6 +162,11 @@ backend/
   search/
     tokenizer.py        # Lowercases & splits text into unicode word tokens
     index.py            # Inverted title/body indexes & BM25 search ranking
+  eval/
+    benchmark.json      # Judged query/relevance set for evaluating ranking changes
+    eval.py             # Runs the benchmark against /search and writes a run file
+    metrics.py          # MRR, precision@k, nDCG@k implementations
+    runs/               # Timestamped output files from eval.py runs
 frontend/
   index.html               # Vite entry page
   src/
@@ -165,7 +179,5 @@ scripts/
 data/
   documents/               # Sample documents (JSON) used by ingest_documents.py
   metadata.json            # Metadata about the fetched corpus
-eval/
-  benchmark.json           # Judged query/relevance set for evaluating ranking changes
 docker-compose.yml         # Local Postgres container
 ```
