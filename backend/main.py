@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager # a tool for defining the lifetime of
 
 from database import Base, get_db, engine
 from models import Document
-from schemas import DocumentCreate, DocumentResponse
+from schemas import DocumentCreate, DocumentUpdate, DocumentResponse
 from search.tokenizer import tokenize
 from search.index import InvertedIndex
 from index_documents import build_index, INDEX_PATH
@@ -42,6 +42,7 @@ def root():
 @app.post("/documents", response_model=DocumentResponse)
 def create_document(
     doc: DocumentCreate,
+    request: Request,
     db: Session = Depends(get_db) # calls `get_db` which creates a SessionLocal() & gives session to the function
     ):
     db_doc = Document(
@@ -52,6 +53,12 @@ def create_document(
     db.add(db_doc)
     db.commit()
     db.refresh(db_doc) # updates PYTHON object w/ values that the database created for our object (i.e default values for NULL fields sent in)
+
+    title_tokens = tokenize(db_doc.title)
+    body_tokens = tokenize(db_doc.content)
+    request.app.state.index.add_document(db_doc.id, title_tokens, body_tokens)
+    request.app.state.index.save(INDEX_PATH)
+
     return db_doc
 
 @app.get("/documents", response_model=list[DocumentResponse])
@@ -67,6 +74,46 @@ def get_document(
     if doc is None:
         raise HTTPException(status_code=404, detail="Document not found")
     return doc
+
+@app.patch("/documents/{doc_id}", response_model=DocumentResponse)
+def update_document(
+    doc_id: int,
+    doc: DocumentUpdate,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    db_doc = db.query(Document).filter(Document.id == doc_id).first()
+    if db_doc is None:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    for field, value in doc.model_dump(exclude_unset=True).items(): # `exclude_unset=True` skips fields the client didn't send
+        setattr(db_doc, field, value)
+    db.commit()
+    db.refresh(db_doc)
+
+    title_tokens = tokenize(db_doc.title)
+    body_tokens = tokenize(db_doc.content)
+    request.app.state.index.remove_document(db_doc.id) # purge the old indexed representation first
+    request.app.state.index.add_document(db_doc.id, title_tokens, body_tokens) # re-index with the merged, current values
+    request.app.state.index.save(INDEX_PATH)
+
+    return db_doc
+
+@app.delete("/documents/{doc_id}", status_code=204)
+def delete_document(
+    doc_id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    db_doc = db.query(Document).filter(Document.id == doc_id).first()
+    if db_doc is None:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    db.delete(db_doc)
+    db.commit()
+
+    request.app.state.index.remove_document(doc_id)
+    request.app.state.index.save(INDEX_PATH)
 
 @app.get("/search")
 def search_documents(

@@ -20,6 +20,17 @@ class InvertedIndex:
         for token, count in Counter(title_tokens).items(): # count the occurences of each token in the title
             self.title_index[token][doc_id] = count
 
+    # removes a document from the body_index, title_index, doc_ids, & doc_lens
+    def remove_document(self, doc_id):
+        self.doc_ids.discard(doc_id)
+        del self.doc_lens[doc_id]
+        for index in (self.body_index, self.title_index):
+            for token in list(index.keys()): # `list(...)` so we can delete keys while iterating
+                if doc_id in index[token]:
+                    del index[token][doc_id]
+                    if not index[token]: # remove the token entirely once no document has it anymore
+                        del index[token]
+
     # `@property` is computed everytime access the method
     @property
     def document_count(self):
