@@ -16,7 +16,8 @@ for file_path in DOCS_DIR.glob("*.json"): # find every file in this directory en
         title=data["title"],
         url=data["url"],
         content=data["content"],
-        source_file=file_path.name
+        source_file=file_path.name,
+        source_type="json"
     )
     db.add(doc)
 

@@ -61,6 +61,37 @@ def create_document(
 
     return db_doc
 
+@app.post("/documents/crawl", response_model=DocumentResponse)
+def crawl_upsert_document(
+    doc: DocumentCreate,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    db_doc = db.query(Document).filter(Document.url == doc.url).first()
+
+    if db_doc is None:
+        db_doc = Document(
+            title=doc.title,
+            url=doc.url,
+            content=doc.content,
+            source_type="crawler"
+        )
+        db.add(db_doc)
+    else:
+        db_doc.title = doc.title
+        db_doc.content = doc.content
+        request.app.state.index.remove_document(db_doc.id) # purge the old indexed representation first
+
+    db.commit()
+    db.refresh(db_doc)
+
+    title_tokens = tokenize(db_doc.title)
+    body_tokens = tokenize(db_doc.content)
+    request.app.state.index.add_document(db_doc.id, title_tokens, body_tokens)
+    request.app.state.index.save(INDEX_PATH)
+
+    return db_doc
+
 @app.get("/documents", response_model=list[DocumentResponse])
 def get_documents(db: Session = Depends(get_db)):
     return db.query(Document).all()
