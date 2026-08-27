@@ -34,7 +34,7 @@ _robots_parser: RobotFileParser | None = None
 
 def get_robots_parser(session: requests.Session) -> RobotFileParser:
     global _robots_parser
-    if _robots_parser is None:
+    if _robots_parser is None: # ensure the parser exists
         parser = RobotFileParser()
         parser.set_url(f"https://{ALLOWED_DOMAIN}/robots.txt")
         # RobotFileParser.read() fetches with urllib's generic User-Agent, which
@@ -44,7 +44,7 @@ def get_robots_parser(session: requests.Session) -> RobotFileParser:
         response = fetch(session, parser.url)
         parser.parse(response.text.splitlines())
         _robots_parser = parser
-    return _robots_parser
+    return _robots_parser # return the existing parser
 
 
 def fetch(session: requests.Session, url: str) -> requests.Response:
@@ -101,13 +101,14 @@ def should_crawl(url: str) -> bool:
 
 def crawl(seed_url: str, max_pages: int = MAX_PAGES, max_depth: int = MAX_DEPTH) -> list[dict]:
     frontier: deque[tuple[str, int]] = deque([(seed_url, 0)])
-    seen = {seed_url}
-    visited: set[str] = set()
+    seen = {seed_url} # have we already put this URL in the queue?
+    visited: set[str] = set() # have we already downloaded & parsed this
     results = []
 
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
 
+    # breadth first search crawler
     while frontier and len(visited) < max_pages:
         url, depth = frontier.popleft()
 
@@ -116,17 +117,17 @@ def crawl(seed_url: str, max_pages: int = MAX_PAGES, max_depth: int = MAX_DEPTH)
         # and the politeness delay that paces every real request to the site.
         if url in visited:
             continue
-        if not get_robots_parser(session).can_fetch(USER_AGENT, url):
+        if not get_robots_parser(session).can_fetch(USER_AGENT, url): # asks whether this URL is allower for our user agent
             print(f"skip (robots disallow): {url}")
             continue
 
         time.sleep(CRAWL_DELAY_SECONDS)
 
         try:
-            response = fetch(session, url)
-        except requests.exceptions.HTTPError as exc:
+            response = fetch(session, url) # download this URL
+        except requests.exceptions.HTTPError as exc: # the server answered, but w/ an error
             status = exc.response.status_code if exc.response is not None else None
-            if status == 429:
+            if status == 429: # rate limited
                 retry_after = int(exc.response.headers.get("Retry-After", CRAWL_DELAY_SECONDS))
                 print(f"429 for {url}, waiting {retry_after}s before retrying")
                 time.sleep(retry_after)
@@ -134,8 +135,8 @@ def crawl(seed_url: str, max_pages: int = MAX_PAGES, max_depth: int = MAX_DEPTH)
                 continue
             print(f"skip (HTTP {status}): {url}")
             continue
-        except requests.exceptions.RequestException as exc:
-            print(f"skip (request error: {exc}): {url}")
+        except requests.exceptions.RequestException as exc: # everything else
+            print(f"skip (request error: {exc}): {url}") # fade this URL
             continue
 
         content_type = response.headers.get("Content-Type", "")
@@ -160,14 +161,14 @@ def crawl(seed_url: str, max_pages: int = MAX_PAGES, max_depth: int = MAX_DEPTH)
         if depth < max_depth:
             for link in page["links"]:
                 normalized = normalize_url(link)
-                if normalized in seen:
+                if normalized in seen: # have we already put this URL in the queue?
                     continue
-                if not should_crawl(normalized):
+                if not should_crawl(normalized): # check basic filters for URL
                     continue
-                seen.add(normalized)
-                frontier.append((normalized, depth + 1))
+                seen.add(normalized) # put URL in queue
+                frontier.append((normalized, depth + 1)) # append URL to queue
 
-    return results
+    return results # in-memory array of document results
 
 
 if __name__ == "__main__":
