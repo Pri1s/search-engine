@@ -7,13 +7,18 @@ No persistence or indexing yet.
 
 from __future__ import annotations
 
+import os
 import time
 from collections import deque
 from urllib.parse import urldefrag, urljoin, urlparse
 from urllib.robotparser import RobotFileParser
 
+import redis
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SEED_URL = "https://basketball.realgm.com/"
 ALLOWED_DOMAIN = "basketball.realgm.com"
@@ -22,6 +27,9 @@ MAX_DEPTH = 2
 REQUEST_TIMEOUT = 10
 CRAWL_DELAY_SECONDS = 2
 USER_AGENT = "search-engine-crawler/0.1 (educational local project)"
+STREAM_KEY = "crawl_stream"
+
+redis_client = redis.from_url(os.getenv("REDIS_URL"))
 
 DISALLOWED_EXTENSIONS = (
     ".jpg", ".jpeg", ".png", ".gif", ".svg", ".ico",
@@ -147,6 +155,11 @@ def crawl(seed_url: str, max_pages: int = MAX_PAGES, max_depth: int = MAX_DEPTH)
         visited.add(url)
         page = parse_page(url, response.text)
         results.append(page)
+        redis_client.xadd(STREAM_KEY, {
+            "title": page["title"],
+            "url": page["canonical_url"],
+            "content": page["text"],
+        })
 
         canonical_note = (
             f" canonical={page['canonical_url']}"
