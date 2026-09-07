@@ -11,5 +11,47 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  api:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://searchengine:searchengine@db:5432/searchengine
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - db
+      - redis
+
+  worker:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    command: uv run python worker.py
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      API_URL: http://api:8000/documents/crawl
+    depends_on:
+      - redis
+      - api
+
+  crawler:
+    build:
+      context: ./backend
+    command: uv run python crawl_documents.py
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - redis
+
 volumes:
   pgdata:
